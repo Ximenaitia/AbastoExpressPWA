@@ -35,3 +35,4 @@ Desarrollar un sistema integral que permita la gestión eficiente de inventarios
 - **Microsoft Teams** - Comunicación del equipo
 
 ## 🏗️ Arquitectura
+- **MVC** - 
