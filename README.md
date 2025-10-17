@@ -11,8 +11,7 @@ Desarrollar un sistema integral que permita la gestión eficiente de inventarios
 |-----|------------|-------------------|
 | Product Owner | Jaqueline Núñez Mendoza | Definición de historias de usuario y validación de funcionalidades |
 | Scrum Master | Joel Isaac Rodríguez López | Facilitación de ceremonias SCRUM y removedor de impedimentos |
-| Developer | Miguel Angel López Gaeta | Desarrollo frontend y backend |
-| Developer | Yael López Mariano | Desarrollo móvil y configuración DevOps |
+| Developer | Miguel Angel López Gaeta | Desarrollo frontend y backend ||
 | Developer | Beatriz Ximena Alvarez Mena | Desarrollo full-stack y testing |
 | Developer | Juan Miguel Ponce Alfaro | Desarrollo backend y base de datos |
 
