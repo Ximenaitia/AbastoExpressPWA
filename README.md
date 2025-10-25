@@ -1,5 +1,7 @@
 # 🛒 AbastoExpress PWA
 
+//Git Pruebas
+
 ## 📋 Descripción
 
 Progressive Web App (PWA) para gestión de inventario y pedidos en tiempo real, desarrollada como parte del proyecto académico de la Universidad Tecnológica de León.
