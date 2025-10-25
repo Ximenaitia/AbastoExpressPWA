@@ -47,3 +47,5 @@ Desarrollar un sistema integral que permita la gestión eficiente de inventarios
 ## 🏗️ Arquitectura
 
 - **MVC** -
+
+Prueba
