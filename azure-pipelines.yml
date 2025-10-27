@@ -11,132 +11,70 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-# STAGE 1: BUILD - Vinculado a TAREAS DE COMPILACIÓN
+# STAGE 1: BUILD - Un solo job con todos los módulos
 - stage: Build
-  displayName: '🔨 Build Stage - Compilación Módulos'
+  displayName: '🔨 Build Stage'
   jobs:
-  - job: Build_Authentication
-    displayName: 'Compilación Módulo Autenticación (US001)'
+  - job: Build_All
+    displayName: 'Compilación Todos los Módulos'
     steps:
     - script: |
-        echo "📦 Compilando módulo autenticación con dependencias de seguridad"
+        echo "📦 COMPILANDO MÓDULO AUTENTICACIÓN (US001)"
         echo "✅ Vinculado a: Compilación módulo autenticación con dependencias de seguridad"
-        # npm run build:auth || dotnet build Auth.sln
-      displayName: 'Build Auth Module'
-    
-  - job: Build_Products
-    displayName: 'Compilación Módulo Productos (US002)'
-    steps:
-    - script: |
-        echo "📦 Compilando módulo productos con dependencias de catálogo"
+        echo "📦 COMPILANDO MÓDULO PRODUCTOS (US002)" 
         echo "✅ Vinculado a: Compilación módulo productos con dependencias de catálogo"
-        # npm run build:products || dotnet build Products.sln
-      displayName: 'Build Products Module'
-
-  - job: Build_Inventory
-    displayName: 'Compilación Módulo Inventario (US003)'
-    steps:
-    - script: |
-        echo "📦 Compilando módulo inventario con manejo de estados"
+        echo "📦 COMPILANDO MÓDULO INVENTARIO (US003)"
         echo "✅ Vinculado a: Compilación módulo inventario con manejo de estados"
-        # npm run build:inventory || dotnet build Inventory.sln
-      displayName: 'Build Inventory Module'
+      displayName: 'Build All Modules'
 
-# STAGE 2: TEST - Vinculado a TAREAS DE PRUEBAS
+# STAGE 2: TEST - Un solo job con todas las pruebas
 - stage: Test
-  displayName: '🧪 Test Stage - Pruebas Automatizadas'
+  displayName: '🧪 Test Stage'
   dependsOn: Build
   jobs:
-  - job: Test_Security
-    displayName: 'Pruebas Seguridad Login (US001)'
+  - job: Test_All
+    displayName: 'Ejecutar Todas las Pruebas'
     steps:
     - script: |
-        echo "🔒 Ejecutando pruebas unitarias de seguridad y validación login"
+        echo "🔒 PRUEBAS SEGURIDAD LOGIN (US001)"
         echo "✅ Vinculado a: Ejecución pruebas unitarias de seguridad y validación login"
-        # npm test:security || dotnet test SecurityTests.csproj
-      displayName: 'Security Tests'
-    
-    - publish: $(System.DefaultWorkingDirectory)/test-reports
-      artifact: security-test-logs
-
-  - job: Test_API_Products
-    displayName: 'Pruebas API CRUD Productos (US002)'
-    steps:
-    - script: |
-        echo "🛒 Ejecutando pruebas API CRUD productos y validación IDs únicos"
+        echo "🛒 PRUEBAS API CRUD PRODUCTOS (US002)"
         echo "✅ Vinculado a: Ejecución pruebas API CRUD productos y validación IDs únicos"
-        # npm test:products || dotnet test Products.API.Tests.csproj
-      displayName: 'Products API Tests'
+        echo "📊 PRUEBAS INVENTARIO (US003)"
+        echo "✅ Vinculado a: Ejecución pruebas automatizadas actualización inventario"
+      displayName: 'Run All Tests'
 
-  - job: Test_Inventory
-    displayName: 'Pruebas Inventario (US003)'
-    steps:
-    - script: |
-        echo "📊 Ejecutando pruebas automatizadas actualización inventario y notificaciones"
-        echo "✅ Vinculado a: Ejecución pruebas automatizadas actualización inventario y notificaciones"
-        # npm test:inventory || dotnet test Inventory.Tests.csproj
-      displayName: 'Inventory Tests'
-
-# STAGE 3: DEPLOY - Vinculado a TAREAS DE DESPLIEGUE
+# STAGE 3: DEPLOY - Un solo job con todos los despliegues
 - stage: Deploy
-  displayName: '🚀 Deploy Stage - Despliegue a Staging'
+  displayName: '🚀 Deploy Stage'
   dependsOn: Test
   jobs:
-  - job: Deploy_Auth_Staging
-    displayName: 'Despliegue Autenticación (US001)'
+  - job: Deploy_All
+    displayName: 'Despliegue Completo'
     steps:
     - script: |
-        echo "🌐 Desplegando autenticación a entorno staging con configuración segura"
+        echo "🌐 DESPLIEGUE AUTENTICACIÓN (US001)"
         echo "✅ Vinculado a: Despliegue automático a entorno staging con configuración segura"
-        # az webapp deployment source config --name my-auth-app
-      displayName: 'Deploy Auth to Staging'
-
-  - job: Deploy_Products_Docker
-    displayName: 'Despliegue Productos Docker (US002)'
-    steps:
-    - script: |
-        echo "🐳 Desplegando contenedores Docker para módulo de productos"
+        echo "🐳 DESPLIEGUE PRODUCTOS DOCKER (US002)"
         echo "✅ Vinculado a: Despliegue contenedores Docker para módulo de productos"
-        # docker-compose up -d
-      displayName: 'Deploy Products Containers'
-
-  - job: Deploy_Inventory_K8s
-    displayName: 'Despliegue Inventario Kubernetes (US003)'
-    steps:
-    - script: |
-        echo "☸️ Desplegando contenedores Kubernetes para servicio de inventario"
+        echo "☸️ DESPLIEGUE INVENTARIO KUBERNETES (US003)"
         echo "✅ Vinculado a: Despliegues contenedores Kubernetes para servicio de inventario"
-        # kubectl apply -f inventory-deployment.yaml
-      displayName: 'Deploy Inventory to K8s'
+      displayName: 'Deploy All Services'
 
-# STAGE 4: MONITOR - Vinculado a TAREAS DE MONITOREO
+# STAGE 4: MONITOR - Un solo job con todo el monitoreo
 - stage: Monitor
-  displayName: '📊 Monitor Stage - Alertas y Métricas'
+  displayName: '📊 Monitor Stage'
   dependsOn: Deploy
   jobs:
-  - job: Monitor_Auth
-    displayName: 'Monitoreo Autenticación (US001)'
+  - job: Monitor_All
+    displayName: 'Configuración Monitoreo'
     steps:
     - script: |
-        echo "🚨 Configurando alertas de errores de autenticación y logs"
+        echo "🚨 MONITOREO AUTENTICACIÓN (US001)"
         echo "✅ Vinculado a: Configuración de alertas de errores de autenticación y logs"
-        echo "🔔 Alertas configuradas: Failed Logins, Security Breaches"
-      displayName: 'Auth Monitoring Setup'
-
-  - job: Monitor_Products
-    displayName: 'Dashboard Productos (US002)'
-    steps:
-    - script: |
-        echo "📈 Configuración dashboard monitoreo consultas y rendimiento catálogo"
+        echo "📈 DASHBOARD PRODUCTOS (US002)"
         echo "✅ Vinculado a: Configuración dashboard monitoreo consultas y rendimiento catálogo"
-        echo "📊 Dashboard: Product Views, API Response Times"
-      displayName: 'Products Dashboard'
-
-  - job: Monitor_Inventory
-    displayName: 'Alertas Inventario (US003)'
-    steps:
-    - script: |
-        echo "⚠️ Configuración alertas rendimiento y monitoreo existencias en tiempo real"
-        echo "✅ Vinculado a: Configuración alertas rendimiento y monitoreo existencias en tiempo real"
-        echo "🔔 Alertas: Low Stock, Inventory Sync Errors"
-      displayName: 'Inventory Alerts'
+        echo "⚠️ ALERTAS INVENTARIO (US003)"
+        echo "✅ Vinculado a: Configuración alertas rendimiento y monitoreo existencias"
+        echo "🎯 PIPELINE EJECUTADO EXITOSAMENTE - TODAS LAS ETAPAS COMPLETADAS"
+      displayName: 'Setup All Monitoring'
