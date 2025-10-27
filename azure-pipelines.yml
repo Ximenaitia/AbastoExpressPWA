@@ -1,8 +1,7 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-latest'
+pool: 'MyAgentPool'  # ⬅️ ESTA ES LA CLAVE - usar tu pool
 
 stages:
 
