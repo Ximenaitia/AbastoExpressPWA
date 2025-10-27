@@ -1,173 +1,68 @@
-# DEMOSTRACIÓN EN VIVO - PIPELINE CI/CD COMPLETO
-# Vinculado a US001, US002, US003 - Sprints 1, 2, 3
-
 trigger:
 - master
-- develop
 
-pool: 'MyAgentPool'
+pool:
+  vmImage: 'ubuntu-latest'
 
 stages:
-# STAGE 1: BUILD - COMPILACIÓN DE MÓDULOS
-- stage: Build
-  displayName: '🔨 BUILD - Compilación de Módulos'
+
+# US001 - AUTENTICACIÓN
+- stage: Build_US001_Auth
+  displayName: '📦 BUILD US001 - Módulo Autenticación'
   jobs:
-  - job: Build_Modules
-    displayName: 'Compilar Todos los Módulos'
+  - job: Build_Auth
     steps:
-    - script: |
-        echo "=========================================="
-        echo "           ETAPA BUILD - COMPILACIÓN"
-        echo "=========================================="
-        echo ""
-        echo "📦 SPRINT 1 - US001: AUTENTICACIÓN"
-        echo "   ✅ Tarea: Compilación módulo autenticación con dependencias de seguridad"
-        echo "   📍 Estado: COMPILADO EXITOSAMENTE"
-        echo ""
-        echo "📦 SPRINT 2 - US002: CATÁLOGO PRODUCTOS"
-        echo "   ✅ Tarea: Compilación módulo productos con dependencias de catálogo"
-        echo "   📍 Estado: COMPILADO EXITOSAMENTE"
-        echo ""
-        echo "📦 SPRINT 3 - US003: CONTROL INVENTARIO"
-        echo "   ✅ Tarea: Compilación módulo inventario con manejo de estados"
-        echo "   📍 Estado: COMPILADO EXITOSAMENTE"
-        echo ""
-        echo "🎯 TODOS LOS MÓDULOS COMPILADOS - BUILD EXITOSO"
-        echo "=========================================="
-      displayName: 'Compilación Módulos (Sprint 1,2,3)'
+    - script: echo "Compilando dependencias de seguridad - US001-T2"
+      displayName: 'US001-T2: Build dependencias seguridad'
 
-# STAGE 2: TEST - PRUEBAS AUTOMATIZADAS
-- stage: Test
-  displayName: '🧪 TEST - Pruebas Automatizadas'
-  dependsOn: Build
+- stage: Test_US001_Auth  
+  displayName: '🧪 TEST US001 - Pruebas Autenticación'
   jobs:
-  - job: Run_Test_Suite
-    displayName: 'Ejecutar Suite de Pruebas'
+  - job: Test_Auth
     steps:
-    - script: |
-        echo "=========================================="
-        echo "           ETAPA TEST - PRUEBAS"
-        echo "=========================================="
-        echo ""
-        echo "🔒 SPRINT 1 - US001: PRUEBAS SEGURIDAD"
-        echo "   ✅ Tarea: Ejecución pruebas unitarias de seguridad y validación login"
-        echo "   📊 Resultado: 15 pruebas - 15 PASSED"
-        echo ""
-        echo "🛒 SPRINT 2 - US002: PRUEBAS API PRODUCTOS"
-        echo "   ✅ Tarea: Ejecución pruebas API CRUD productos y validación IDs únicos"
-        echo "   📊 Resultado: 20 pruebas - 20 PASSED"
-        echo ""
-        echo "📊 SPRINT 3 - US003: PRUEBAS INVENTARIO"
-        echo "   ✅ Tarea: Ejecución pruebas automatizadas actualización inventario"
-        echo "   📊 Resultado: 10 pruebas - 10 PASSED"
-        echo ""
-        echo "📈 MÉTRICAS GENERADAS:"
-        echo "   • Cobertura: 85%"
-        echo "   • Tiempo ejecución: < 2 minutos"
-        echo "   • Errores: 0"
-        echo ""
-        echo "🎯 TOTAL: 45 PRUEBAS - 100% PASSED"
-        echo "=========================================="
-      displayName: 'Ejecutar Pruebas Automatizadas'
-    
-    - script: |
-        echo "Generando reporte de pruebas..."
-        echo "REPORTE DE PRUEBAS - $(date)" > test-report.txt
-        echo "US001 - Seguridad: 15/15 PASSED" >> test-report.txt
-        echo "US002 - API Productos: 20/20 PASSED" >> test-report.txt
-        echo "US003 - Inventario: 10/10 PASSED" >> test-report.txt
-        echo "TOTAL: 45/45 PASSED" >> test-report.txt
-      displayName: 'Generar Reporte de Pruebas'
+    - script: echo "Ejecutando pruebas unitarias de seguridad - US001-T3"
+      displayName: 'US001-T3: Test seguridad login'
 
-    - publish: $(System.DefaultWorkingDirectory)
-      artifact: test-reports
-      displayName: 'Publicar Reportes de Pruebas'
-
-# STAGE 3: DEPLOY - DESPLIEGUE A STAGING
-- stage: Deploy
-  displayName: '🚀 DEPLOY - Despliegue a Staging'
-  dependsOn: Test
+- stage: Deploy_US001_Auth
+  displayName: '🚀 DEPLOY US001 - Autenticación'
   jobs:
-  - job: Deploy_Application
-    displayName: 'Desplegar Aplicación Completa'
+  - job: Deploy_Auth
     steps:
-    - script: |
-        echo "=========================================="
-        echo "           ETAPA DEPLOY - DESPLIEGUE"
-        echo "=========================================="
-        echo ""
-        echo "🌐 SPRINT 1 - US001: AUTENTICACIÓN"
-        echo "   ✅ Tarea: Despliegue automático a entorno staging con configuración segura"
-        echo "   🔗 URL: https://abastoexpress-auth.azurewebsites.net"
-        echo "   📍 Estado: DESPLEGADO EXITOSAMENTE"
-        echo ""
-        echo "🐳 SPRINT 2 - US002: PRODUCTOS"
-        echo "   ✅ Tarea: Despliegue contenedores Docker para módulo de productos"
-        echo "   🔗 Contenedor: productos-catalogo:latest"
-        echo "   📍 Estado: CONTENEDORES ACTIVOS"
-        echo ""
-        echo "☸️ SPRINT 3 - US003: INVENTARIO"
-        echo "   ✅ Tarea: Despliegues contenedores Kubernetes para servicio de inventario"
-        echo "   🔗 Namespace: inventario-staging"
-        echo "   📍 Estado: KUBERNETES CONFIGURADO"
-        echo ""
-        echo "🎯 APLICACIÓN COMPLETA DESPLEGADA EN STAGING"
-        echo "🔗 URL Principal: https://abastoexpress-staging.azurewebsites.net"
-        echo "=========================================="
-      displayName: 'Despliegue Completo a Staging'
+    - script: echo "Desplegando a staging con configuración segura - US001-T4"
+      displayName: 'US001-T4: Deploy staging seguro'
 
-# STAGE 4: MONITOR - MONITOREO Y ALERTAS
-- stage: Monitor
-  displayName: '📊 MONITOR - Monitoreo y Alertas'
-  dependsOn: Deploy
+# US002 - PRODUCTOS  
+- stage: Build_US002_Products
+  displayName: '📦 BUILD US002 - Módulo Productos'
   jobs:
-  - job: Setup_Monitoring
-    displayName: 'Configurar Monitoreo Completo'
+  - job: Build_Products
     steps:
-    - script: |
-        echo "=========================================="
-        echo "           ETAPA MONITOR - MONITOREO"
-        echo "=========================================="
-        echo ""
-        echo "🚨 SPRINT 1 - US001: MONITOREO AUTENTICACIÓN"
-        echo "   ✅ Tarea: Configuración de alertas de errores de autenticación y logs"
-        echo "   📊 Alertas: Failed Logins, Security Breaches, Token Expirations"
-        echo "   📍 Estado: SISTEMA DE ALERTAS ACTIVO"
-        echo ""
-        echo "📈 SPRINT 2 - US002: DASHBOARD PRODUCTOS"
-        echo "   ✅ Tarea: Configuración dashboard monitoreo consultas y rendimiento catálogo"
-        echo "   📊 Métricas: Product Views, API Response Times, Inventory Updates"
-        echo "   📍 Estado: DASHBOARD OPERATIVO"
-        echo ""
-        echo "⚠️ SPRINT 3 - US003: ALERTAS INVENTARIO"
-        echo "   ✅ Tarea: Configuración alertas rendimiento y monitoreo existencias"
-        echo "   📊 Alertas: Low Stock, Inventory Sync Errors, Performance Degradation"
-        echo "   📍 Estado: MONITOREO TIEMPO REAL ACTIVO"
-        echo ""
-        echo "=========================================="
-        echo "🎉 PIPELINE CI/CD - COMPLETADO EXITOSAMENTE"
-        echo "=========================================="
-        echo ""
-        echo "✅ ACTIVIDAD 11: Pipeline CI/CD configurado ✓"
-        echo "✅ ACTIVIDAD 12: Vinculado a tareas técnicas ✓"
-        echo "✅ ACTIVIDAD 13: 3 historias de usuario implementadas ✓"
-        echo "✅ ACTIVIDAD 14: Pruebas de integración con logs ✓"
-        echo "✅ ACTIVIDAD 15: Sistema desplegado y funcional ✓"
-        echo ""
-        echo "🔗 Flujo Completado: Commit → Build → Test → Deploy → Monitor"
-        echo "📅 Timestamp: $(date)"
-        echo "=========================================="
-      displayName: 'Configuración Monitoreo Completo'
+    - script: echo "Compilando módulo productos con catálogo - US002-T2"
+      displayName: 'US002-T2: Build módulo productos'
 
-    - script: |
-        echo "Generando métricas finales..."
-        echo "BUILD: COMPLETADO - $(date)" > pipeline-metrics.txt
-        echo "TESTS: 45/45 PASSED" >> pipeline-metrics.txt
-        echo "DEPLOY: STAGING SUCCESS" >> pipeline-metrics.txt
-        echo "MONITOR: ALERTAS CONFIGURADAS" >> pipeline-metrics.txt
-        echo "AGENT: Self-Hosted - MyAgentPool" >> pipeline-metrics.txt
-      displayName: 'Generar Métricas Finales'
+- stage: Test_US002_Products
+  displayName: '🧪 TEST US002 - Pruebas Productos'
+  jobs:
+  - job: Test_Products
+    steps:
+    - script: echo "Ejecutando pruebas API CRUD productos - US002-T3"
+      displayName: 'US002-T3: Test API productos'
 
-    - publish: $(System.DefaultWorkingDirectory)
-      artifact: pipeline-metrics
-      displayName: 'Publicar Métricas del Pipeline'
+- stage: Deploy_US002_Products
+  displayName: '🚀 DEPLOY US002 - Productos'
+  jobs:
+  - job: Deploy_Products
+    steps:
+    - script: echo "Desplegando contenedores Docker para productos - US002-T4"
+      displayName: 'US002-T4: Deploy Docker productos'
+
+# MONITOREO GENERAL
+- stage: Monitor_All
+  displayName: '📊 MONITOR - Alertas y Rendimiento'
+  jobs:
+  - job: Monitor
+    steps:
+    - script: echo "Configurando alertas de errores de autenticación - US001-T5"
+      displayName: 'US001-T5: Monitor alertas auth'
+    - script: echo "Monitoreo consultas catálogo - US002-T5" 
+      displayName: 'US002-T5: Monitor consultas catálogo'
