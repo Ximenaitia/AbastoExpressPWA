@@ -7,7 +7,7 @@ stages:
 
 # US001 - AUTENTICACIÓN
 - stage: Build_US001_Auth
-  displayName: '📦 BUILD US001 - Módulo Autenticación'
+  displayName: '📦 BUILD US001 - Autenticación'
   jobs:
   - job: Build_Auth
     steps:
@@ -15,7 +15,7 @@ stages:
       displayName: 'US001-T2: Build dependencias seguridad'
 
 - stage: Test_US001_Auth  
-  displayName: '🧪 TEST US001 - Pruebas Autenticación'
+  displayName: '🧪 TEST US001 - Autenticación'
   jobs:
   - job: Test_Auth
     steps:
@@ -32,7 +32,7 @@ stages:
 
 # US002 - PRODUCTOS  
 - stage: Build_US002_Products
-  displayName: '📦 BUILD US002 - Módulo Productos'
+  displayName: '📦 BUILD US002 - Productos'
   jobs:
   - job: Build_Products
     steps:
@@ -40,7 +40,7 @@ stages:
       displayName: 'US002-T2: Build módulo productos'
 
 - stage: Test_US002_Products
-  displayName: '🧪 TEST US002 - Pruebas Productos'
+  displayName: '🧪 TEST US002 - Productos'
   jobs:
   - job: Test_Products
     steps:
@@ -55,13 +55,67 @@ stages:
     - script: echo "Desplegando contenedores Docker para productos - US002-T4"
       displayName: 'US002-T4: Deploy Docker productos'
 
-# MONITOREO GENERAL
+# US003 - INVENTARIO
+- stage: Build_US003_Inventory
+  displayName: '📦 BUILD US003 - Inventario'
+  jobs:
+  - job: Build_Inventory
+    steps:
+    - script: echo "Compilando módulo inventario con estados - US003-T2"
+      displayName: 'US003-T2: Build inventario estados'
+
+- stage: Test_US003_Inventory
+  displayName: '🧪 TEST US003 - Inventario'
+  jobs:
+  - job: Test_Inventory
+    steps:
+    - script: echo "Ejecutando pruebas automatizadas inventario - US003-T3"
+      displayName: 'US003-T3: Test inventario automatizado'
+
+- stage: Deploy_US003_Inventory
+  displayName: '🚀 DEPLOY US003 - Inventario'
+  jobs:
+  - job: Deploy_Inventory
+    steps:
+    - script: echo "Desplegando contenedores Kubernetes - US003-T4"
+      displayName: 'US003-T4: Deploy Kubernetes'
+
+# US004 - PEDIDOS
+- stage: Build_US004_Orders
+  displayName: '📦 BUILD US004 - Pedidos'
+  jobs:
+  - job: Build_Orders
+    steps:
+    - script: echo "Compilando app móvil con módulo pedidos - US004-T2"
+      displayName: 'US004-T2: Build app móvil pedidos'
+
+- stage: Test_US004_Orders
+  displayName: '🧪 TEST US004 - Pedidos'
+  jobs:
+  - job: Test_Orders
+    steps:
+    - script: echo "Ejecutando pruebas estados pedido - US004-T3"
+      displayName: 'US004-T3: Test estados pedido'
+
+- stage: Deploy_US004_Orders
+  displayName: '🚀 DEPLOY US004 - Pedidos'
+  jobs:
+  - job: Deploy_Orders
+    steps:
+    - script: echo "Desplegando app móvil a stores - US004-T4"
+      displayName: 'US004-T4: Deploy app móvil'
+
+# MONITOREO GENERAL (Todas las T5)
 - stage: Monitor_All
-  displayName: '📊 MONITOR - Alertas y Rendimiento'
+  displayName: '📊 MONITOR - Todas las Alertas'
   jobs:
   - job: Monitor
     steps:
-    - script: echo "Configurando alertas de errores de autenticación - US001-T5"
+    - script: echo "Configurando alertas de autenticación - US001-T5"
       displayName: 'US001-T5: Monitor alertas auth'
-    - script: echo "Monitoreo consultas catálogo - US002-T5" 
+    - script: echo "Monitoreo consultas catálogo - US002-T5"
       displayName: 'US002-T5: Monitor consultas catálogo'
+    - script: echo "Alertas rendimiento existencias - US003-T5"
+      displayName: 'US003-T5: Monitor existencias'
+    - script: echo "Monitoreo errores pedidos - US004-T5"
+      displayName: 'US004-T5: Monitor errores pedidos'
