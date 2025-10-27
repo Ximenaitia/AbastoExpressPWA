@@ -1,1 +1,67 @@
-fix: usar MyAgentPool y vincular tareas sprint
+trigger:
+- master
+
+pool: 'MyAgentPool'
+
+stages:
+
+# US001 - AUTENTICACIÓN
+- stage: Build_US001_Auth
+  displayName: '📦 BUILD US001 - Módulo Autenticación'
+  jobs:
+  - job: Build_Auth
+    steps:
+    - script: echo "Compilando dependencias de seguridad - US001-T2"
+      displayName: 'US001-T2: Build dependencias seguridad'
+
+- stage: Test_US001_Auth  
+  displayName: '🧪 TEST US001 - Pruebas Autenticación'
+  jobs:
+  - job: Test_Auth
+    steps:
+    - script: echo "Ejecutando pruebas unitarias de seguridad - US001-T3"
+      displayName: 'US001-T3: Test seguridad login'
+
+- stage: Deploy_US001_Auth
+  displayName: '🚀 DEPLOY US001 - Autenticación'
+  jobs:
+  - job: Deploy_Auth
+    steps:
+    - script: echo "Desplegando a staging con configuración segura - US001-T4"
+      displayName: 'US001-T4: Deploy staging seguro'
+
+# US002 - PRODUCTOS  
+- stage: Build_US002_Products
+  displayName: '📦 BUILD US002 - Módulo Productos'
+  jobs:
+  - job: Build_Products
+    steps:
+    - script: echo "Compilando módulo productos con catálogo - US002-T2"
+      displayName: 'US002-T2: Build módulo productos'
+
+- stage: Test_US002_Products
+  displayName: '🧪 TEST US002 - Pruebas Productos'
+  jobs:
+  - job: Test_Products
+    steps:
+    - script: echo "Ejecutando pruebas API CRUD productos - US002-T3"
+      displayName: 'US002-T3: Test API productos'
+
+- stage: Deploy_US002_Products
+  displayName: '🚀 DEPLOY US002 - Productos'
+  jobs:
+  - job: Deploy_Products
+    steps:
+    - script: echo "Desplegando contenedores Docker para productos - US002-T4"
+      displayName: 'US002-T4: Deploy Docker productos'
+
+# MONITOREO GENERAL
+- stage: Monitor_All
+  displayName: '📊 MONITOR - Alertas y Rendimiento'
+  jobs:
+  - job: Monitor
+    steps:
+    - script: echo "Configurando alertas de errores de autenticación - US001-T5"
+      displayName: 'US001-T5: Monitor alertas auth'
+    - script: echo "Monitoreo consultas catálogo - US002-T5" 
+      displayName: 'US002-T5: Monitor consultas catálogo'
