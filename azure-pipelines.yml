@@ -5,15 +5,138 @@
 
 trigger:
 - master
+- develop
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+# STAGE 1: BUILD - Vinculado a TAREAS DE COMPILACIÓN
+- stage: Build
+  displayName: '🔨 Build Stage - Compilación Módulos'
+  jobs:
+  - job: Build_Authentication
+    displayName: 'Compilación Módulo Autenticación (US001)'
+    steps:
+    - script: |
+        echo "📦 Compilando módulo autenticación con dependencias de seguridad"
+        echo "✅ Vinculado a: Compilación módulo autenticación con dependencias de seguridad"
+        # npm run build:auth || dotnet build Auth.sln
+      displayName: 'Build Auth Module'
+    
+  - job: Build_Products
+    displayName: 'Compilación Módulo Productos (US002)'
+    steps:
+    - script: |
+        echo "📦 Compilando módulo productos con dependencias de catálogo"
+        echo "✅ Vinculado a: Compilación módulo productos con dependencias de catálogo"
+        # npm run build:products || dotnet build Products.sln
+      displayName: 'Build Products Module'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  - job: Build_Inventory
+    displayName: 'Compilación Módulo Inventario (US003)'
+    steps:
+    - script: |
+        echo "📦 Compilando módulo inventario con manejo de estados"
+        echo "✅ Vinculado a: Compilación módulo inventario con manejo de estados"
+        # npm run build:inventory || dotnet build Inventory.sln
+      displayName: 'Build Inventory Module'
+
+# STAGE 2: TEST - Vinculado a TAREAS DE PRUEBAS
+- stage: Test
+  displayName: '🧪 Test Stage - Pruebas Automatizadas'
+  dependsOn: Build
+  jobs:
+  - job: Test_Security
+    displayName: 'Pruebas Seguridad Login (US001)'
+    steps:
+    - script: |
+        echo "🔒 Ejecutando pruebas unitarias de seguridad y validación login"
+        echo "✅ Vinculado a: Ejecución pruebas unitarias de seguridad y validación login"
+        # npm test:security || dotnet test SecurityTests.csproj
+      displayName: 'Security Tests'
+    
+    - publish: $(System.DefaultWorkingDirectory)/test-reports
+      artifact: security-test-logs
+
+  - job: Test_API_Products
+    displayName: 'Pruebas API CRUD Productos (US002)'
+    steps:
+    - script: |
+        echo "🛒 Ejecutando pruebas API CRUD productos y validación IDs únicos"
+        echo "✅ Vinculado a: Ejecución pruebas API CRUD productos y validación IDs únicos"
+        # npm test:products || dotnet test Products.API.Tests.csproj
+      displayName: 'Products API Tests'
+
+  - job: Test_Inventory
+    displayName: 'Pruebas Inventario (US003)'
+    steps:
+    - script: |
+        echo "📊 Ejecutando pruebas automatizadas actualización inventario y notificaciones"
+        echo "✅ Vinculado a: Ejecución pruebas automatizadas actualización inventario y notificaciones"
+        # npm test:inventory || dotnet test Inventory.Tests.csproj
+      displayName: 'Inventory Tests'
+
+# STAGE 3: DEPLOY - Vinculado a TAREAS DE DESPLIEGUE
+- stage: Deploy
+  displayName: '🚀 Deploy Stage - Despliegue a Staging'
+  dependsOn: Test
+  jobs:
+  - job: Deploy_Auth_Staging
+    displayName: 'Despliegue Autenticación (US001)'
+    steps:
+    - script: |
+        echo "🌐 Desplegando autenticación a entorno staging con configuración segura"
+        echo "✅ Vinculado a: Despliegue automático a entorno staging con configuración segura"
+        # az webapp deployment source config --name my-auth-app
+      displayName: 'Deploy Auth to Staging'
+
+  - job: Deploy_Products_Docker
+    displayName: 'Despliegue Productos Docker (US002)'
+    steps:
+    - script: |
+        echo "🐳 Desplegando contenedores Docker para módulo de productos"
+        echo "✅ Vinculado a: Despliegue contenedores Docker para módulo de productos"
+        # docker-compose up -d
+      displayName: 'Deploy Products Containers'
+
+  - job: Deploy_Inventory_K8s
+    displayName: 'Despliegue Inventario Kubernetes (US003)'
+    steps:
+    - script: |
+        echo "☸️ Desplegando contenedores Kubernetes para servicio de inventario"
+        echo "✅ Vinculado a: Despliegues contenedores Kubernetes para servicio de inventario"
+        # kubectl apply -f inventory-deployment.yaml
+      displayName: 'Deploy Inventory to K8s'
+
+# STAGE 4: MONITOR - Vinculado a TAREAS DE MONITOREO
+- stage: Monitor
+  displayName: '📊 Monitor Stage - Alertas y Métricas'
+  dependsOn: Deploy
+  jobs:
+  - job: Monitor_Auth
+    displayName: 'Monitoreo Autenticación (US001)'
+    steps:
+    - script: |
+        echo "🚨 Configurando alertas de errores de autenticación y logs"
+        echo "✅ Vinculado a: Configuración de alertas de errores de autenticación y logs"
+        echo "🔔 Alertas configuradas: Failed Logins, Security Breaches"
+      displayName: 'Auth Monitoring Setup'
+
+  - job: Monitor_Products
+    displayName: 'Dashboard Productos (US002)'
+    steps:
+    - script: |
+        echo "📈 Configuración dashboard monitoreo consultas y rendimiento catálogo"
+        echo "✅ Vinculado a: Configuración dashboard monitoreo consultas y rendimiento catálogo"
+        echo "📊 Dashboard: Product Views, API Response Times"
+      displayName: 'Products Dashboard'
+
+  - job: Monitor_Inventory
+    displayName: 'Alertas Inventario (US003)'
+    steps:
+    - script: |
+        echo "⚠️ Configuración alertas rendimiento y monitoreo existencias en tiempo real"
+        echo "✅ Vinculado a: Configuración alertas rendimiento y monitoreo existencias en tiempo real"
+        echo "🔔 Alertas: Low Stock, Inventory Sync Errors"
+      displayName: 'Inventory Alerts'
