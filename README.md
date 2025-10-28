@@ -6,6 +6,8 @@
 
 Progressive Web App (PWA) para gestión de inventario y pedidos en tiempo real, desarrollada como parte del proyecto académico de la Universidad Tecnológica de León.
 
+NUEVOS CAMBIOS
+
 ## 🎯 Objetivo
 
 Desarrollar un sistema integral que permita la gestión eficiente de inventarios y procesamiento de pedidos para pequeñas y medianas empresas.
