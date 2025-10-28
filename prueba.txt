@@ -2,4 +2,4 @@
 No Jaqueline
 # Trigger pipeline demo - [tu nombre] - [fecha]
 
-# Trigger pruebas - [juan] - [fecha]
+# Trigger pruebas - [juan] - [hoy]
