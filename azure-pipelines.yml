@@ -7,65 +7,129 @@ pool: 'MyAgentPool'
 
 stages:
 
-# BUILD GENERAL - Todas las funcionalidades
-- stage: Build_All
-  displayName: '📦 BUILD - Todas las funcionalidades'
+# STAGE 1: CONSTRUCCIÓN - Mapeo de tareas técnicas de build
+- stage: Build_Sprint
+  displayName: '🏗️ CONSTRUCCIÓN - Tareas Técnicas del Sprint'
   jobs:
-  - job: Build_All_Functionalities
+  - job: Build_Tasks
+    displayName: 'Implementación Técnica US001-US004'
     steps:
-    - script: echo "Compilando dependencias de seguridad - US001"
-      displayName: 'US001: Build seguridad'
-    - script: echo "Compilando módulo productos con catálogo - US002"
-      displayName: 'US002: Build productos'
-    - script: echo "Compilando módulo inventario con estados - US003"
-      displayName: 'US003: Build inventario'
-    - script: echo "Compilando app móvil con módulo pedidos - US004"
-      displayName: 'US004: Build pedidos'
+    # US001 - Autenticación
+    - script: echo "Implementando JWT Token Provider - (US001-T2)"
+      displayName: '🔐 [US001-T2] JWT Implementation'
+    - script: echo "Configurando políticas de autorización - (US001-T2)"
+      displayName: '⚡ [US001-T2] Auth Policies'
+    
+    # US002 - Productos
+    - script: echo "Desarrollando API CRUD Productos - (US002-T2)"
+      displayName: '🛒 [US002-T2] Products API'
+    - script: echo "Implementando servicio de catálogo - (US002-T2)"
+      displayName: '📋 [US002-T2] Catalog Service'
+    
+    # US003 - Inventario
+    - script: echo "Creando entidad Inventory - (US003-T2)"
+      displayName: '📊 [US003-T2] Inventory Entity'
+    - script: echo "Desarrollando servicio Stock Manager - (US003-T2)"
+      displayName: '🔄 [US003-T2] Stock Service'
+    
+    # US004 - Pedidos
+    - script: echo "Implementando Order State Machine - (US004-T2)"
+      displayName: '📦 [US004-T2] Order State'
+    - script: echo "Desarrollando mobile order component - (US004-T2)"
+      displayName: '📱 [US004-T2] Mobile Component'
 
-# TEST GENERAL - Todas las funcionalidades
-- stage: Test_All
-  displayName: '🧪 TEST - Todas las funcionalidades'
-  dependsOn: Build_All
+# STAGE 2: PRUEBAS - Mapeo de tareas técnicas de testing
+- stage: Test_Sprint
+  displayName: '🧪 VALIDACIÓN - Tareas Técnicas de Testing'
+  dependsOn: Build_Sprint
   jobs:
-  - job: Test_All_Functionalities
+  - job: Test_Tasks
+    displayName: 'Pruebas Técnicas US001-US004'
     steps:
-    - script: echo "Ejecutando pruebas unitarias de seguridad - US001"
-      displayName: 'US001: Test seguridad login'
-    - script: echo "Ejecutando pruebas API CRUD productos - US002"
-      displayName: 'US002: Test API productos'
-    - script: echo "Ejecutando pruebas automatizadas inventario - US003"
-      displayName: 'US003: Test inventario'
-    - script: echo "Ejecutando pruebas estados pedido - US004"
-      displayName: 'US004: Test estados pedido'
+    # US001 - Autenticación
+    - script: echo "Ejecutando Unit Tests Auth Middleware - (US001-T3)"
+      displayName: '🔒 [US001-T3] Auth Unit Tests'
+    - script: echo "Integration Tests Login Flow - (US001-T3)"
+      displayName: '🚪 [US001-T3] Login Integration'
+    
+    # US002 - Productos
+    - script: echo "API Testing Products Endpoints - (US002-T3)"
+      displayName: '🛍️ [US002-T3] Products API Test'
+    - script: echo "Performance Tests Catalog - (US002-T3)"
+      displayName: '⚡ [US002-T3] Catalog Performance'
+    
+    # US003 - Inventario
+    - script: echo "Automated Inventory Flow Tests - (US003-T3)"
+      displayName: '🤖 [US003-T3] Inventory Automation'
+    - script: echo "Data Consistency Validation - (US003-T3)"
+      displayName: '📈 [US003-T3] Data Consistency'
+    
+    # US004 - Pedidos
+    - script: echo "Order State Transition Tests - (US004-T3)"
+      displayName: '📋 [US004-T3] State Tests'
+    - script: echo "Mobile App Testing - (US004-T3)"
+      displayName: '📲 [US004-T3] Mobile Testing'
 
-# DEPLOY GENERAL - Todas las funcionalidades
-- stage: Deploy_All
-  displayName: '🚀 DEPLOY - Todas las funcionalidades'
-  dependsOn: Test_All
+# STAGE 3: DESPLIEGUE - Mapeo de tareas técnicas de deployment
+- stage: Deploy_Sprint
+  displayName: '🚀 DESPLIEGUE - Tareas Técnicas de Deploy'
+  dependsOn: Test_Sprint
   jobs:
-  - job: Deploy_All_Functionalities
+  - job: Deploy_Tasks
+    displayName: 'Despliegue Técnico US001-US004'
     steps:
-    - script: echo "Desplegando a staging con configuración segura - US001"
-      displayName: 'US001: Deploy auth'
-    - script: echo "Desplegando contenedores Docker para productos - US002"
-      displayName: 'US002: Deploy productos'
-    - script: echo "Desplegando contenedores Kubernetes - US003"
-      displayName: 'US003: Deploy inventario'
-    - script: echo "Desplegando app móvil a stores - US004"
-      displayName: 'US004: Deploy pedidos'
+    # US001 - Autenticación
+    - script: echo "Deploy Auth Service to Kubernetes - (US001-T4)"
+      displayName: '☸️ [US001-T4] K8s Auth Deploy'
+    - script: echo "SSL/TLS Configuration Staging - (US001-T4)"
+      displayName: '🔏 [US001-T4] SSL Setup'
+    
+    # US002 - Productos
+    - script: echo "Dockerize Products Microservice - (US002-T4)"
+      displayName: '🐳 [US002-T4] Docker Products'
+    - script: echo "Load Balancer Configuration - (US002-T4)"
+      displayName: '⚖️ [US002-T4] Load Balancer'
+    
+    # US003 - Inventario
+    - script: echo "Deploy Inventory Helm Charts - (US003-T4)"
+      displayName: '📦 [US003-T4] Helm Deploy'
+    - script: echo "Redis Cache Configuration - (US003-T4)"
+      displayName: '🧠 [US003-T4] Redis Cache'
+    
+    # US004 - Pedidos
+    - script: echo "Deploy to App Store Connect - (US004-T4)"
+      displayName: '🍎 [US004-T4] iOS Deploy'
+    - script: echo "Deploy to Google Play Console - (US004-T4)"
+      displayName: '🤖 [US004-T4] Android Deploy'
 
-# MONITOREO GENERAL - Todas las funcionalidades
-- stage: Monitor_All
-  displayName: '📊 MONITOR - Todas las funcionalidades'
-  dependsOn: Deploy_All
+# STAGE 4: MONITOREO - Mapeo de tareas técnicas de monitoreo
+- stage: Monitor_Sprint
+  displayName: '📊 MONITOREO - Tareas Técnicas de Monitoring'
+  dependsOn: Deploy_Sprint
   jobs:
-  - job: Monitor_All_Functionalities
+  - job: Monitor_Tasks
+    displayName: 'Monitoreo Técnico US001-US004'
     steps:
-    - script: echo "Configurando alertas de autenticación - US001"
-      displayName: 'US001: Monitor auth'
-    - script: echo "Monitoreo consultas catálogo - US002"
-      displayName: 'US002: Monitor productos'
-    - script: echo "Alertas rendimiento existencias - US003"
-      displayName: 'US003: Monitor inventario'
-    - script: echo "Monitoreo errores pedidos - US004"
-      displayName: 'US004: Monitor pedidos'
+    # US001 - Autenticación
+    - script: echo "Configure Failed Login Alerts - (US001-T5)"
+      displayName: '🚨 [US001-T5] Security Alerts'
+    - script: echo "Auth Metrics Dashboard - (US001-T5)"
+      displayName: '📈 [US001-T5] Auth Dashboard'
+    
+    # US002 - Productos
+    - script: echo "Monitor Slow Database Queries - (US002-T5)"
+      displayName: '🐌 [US002-T5] Query Monitoring'
+    - script: echo "API Availability Alerts - (US002-T5)"
+      displayName: '📡 [US002-T5] API Alerts'
+    
+    # US003 - Inventario
+    - script: echo "Low Stock Level Alerts - (US003-T5)"
+      displayName: '📉 [US003-T5] Stock Alerts'
+    - script: echo "Inventory Metrics Dashboard - (US003-T5)"
+      displayName: '📊 [US003-T5] Inventory Dashboard'
+    
+    # US004 - Pedidos
+    - script: echo "Order Error Rate Monitoring - (US004-T5)"
+      displayName: '❌ [US004-T5] Error Monitoring'
+    - script: echo "Mobile App Analytics - (US004-T5)"
+      displayName: '📱 [US004-T5] Mobile Analytics'
